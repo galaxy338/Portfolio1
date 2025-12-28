@@ -15,10 +15,10 @@
             --accent: #c19a6b; 
             --text: #f5f5f5;
             --muted: #57534e;
-            --grid: rgba(193, 154, 107, 0.04);
-            --console-bg: rgba(0, 0, 0, 0.8);
-            --coffee-shade-1: #6f4e37; /* Coffee Brown */
-            --coffee-shade-2: #c19a6b; /* Lighter Crema */
+            --grid: rgba(193, 154, 107, 0.05);
+            --console-bg: rgba(0, 0, 0, 0.85);
+            --coffee-shade-1: #6f4e37;
+            --coffee-shade-2: #c19a6b;
         }
 
         body.pencil-mode {
@@ -83,8 +83,6 @@
             border: 2px solid #000;
         }
 
-        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
         /* --- Hero --- */
         .hero {
             min-height: 100vh;
@@ -123,79 +121,89 @@
             filter: url(#sketchy-text);
         }
 
-        /* --- Console FIX --- */
+        /* --- Console: Forced Landscape for PC --- */
         .console {
             width: 100%;
-            max-width: 750px;
+            max-width: 850px; /* Wide landscape feel */
             background: var(--console-bg);
             border: 1px solid var(--muted);
             border-left: 4px solid var(--accent);
-            padding: 25px;
+            padding: 35px;
             margin-bottom: 50px;
             transition: 0.3s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-
-        body.pencil-mode .console { filter: url(#sketchy-border); border: 2px solid #000; }
 
         .console-pre {
             font-family: 'JetBrains Mono', monospace;
             display: flex;
-            gap: 30px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            white-space: pre; /* Keeps ASCII aligned */
+            flex-direction: row; /* Landscape layout */
+            gap: 50px;
+            align-items: flex-start;
+            white-space: pre;
         }
 
         .ascii-logo { 
             color: #e95420; 
-            font-size: 11px; /* Smaller font ensures it fits */
+            font-size: 10px;
             line-height: 1.1;
-            font-weight: normal; 
+            flex-shrink: 0;
         }
-        body.pencil-mode .ascii-logo { color: #000; }
 
-        .fetch-info { color: var(--text); font-size: 0.85rem; line-height: 1.6; }
+        .fetch-info { color: var(--text); font-size: 0.9rem; line-height: 1.8; text-align: left; }
         .fetch-info span { color: var(--accent); font-weight: bold; }
 
-        /* --- Projects (Image-Free) --- */
+        /* --- Marquee --- */
+        .marquee-section {
+            padding: 60px 0;
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid var(--grid);
+            border-bottom: 1px solid var(--grid);
+            overflow: hidden;
+        }
+        .marquee-track {
+            display: flex;
+            gap: 80px;
+            animation: scroll 30s linear infinite;
+            width: max-content;
+        }
+        .marquee-track i { font-size: 3rem; color: var(--muted); transition: 0.3s; }
+        .marquee-track i:hover { color: var(--accent); transform: scale(1.2); }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* --- Projects (Images are Back) --- */
         .projects { padding: 100px 5%; }
         .project-panel {
             display: flex;
             border: 1px solid var(--grid);
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             text-decoration: none;
             color: inherit;
-            background: rgba(255,255,255,0.01);
-            transition: 0.4s;
+            background: rgba(255,255,255,0.02);
+            transition: 0.5s;
+            overflow: hidden;
         }
 
-        .project-panel:hover { border-color: var(--accent); transform: scale(1.01); }
-
-        .panel-placeholder {
-            flex: 0.4;
-            height: 250px;
-            background: repeating-linear-gradient(45deg, var(--grid), var(--grid) 10px, transparent 10px, transparent 20px);
-            border-right: 1px solid var(--grid);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono';
-            color: var(--muted);
-            font-size: 2rem;
+        .panel-img {
+            flex: 1;
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(1) brightness(0.6);
+            transition: 0.7s;
         }
+        .project-panel:hover .panel-img { filter: grayscale(0) brightness(0.9); }
 
-        body.pencil-mode .project-panel { border: 2px solid #000; filter: url(#sketchy-border); background: #fff; }
+        .panel-content { flex: 1; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        .panel-content h3 { font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; }
 
-        .panel-content { flex: 1; padding: 40px; }
-        .panel-content h3 { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
-        .panel-content .tag { font-family: 'JetBrains Mono'; color: var(--muted); font-size: 0.7rem; margin-bottom: 5px; display: block; }
-
-        footer { padding: 60px 5%; text-align: center; border-top: 1px solid var(--grid); opacity: 0.7; }
-
-        @media (max-width: 768px) {
-            .console-pre { flex-direction: column; }
+        /* Mobile Adjustments */
+        @media (max-width: 800px) {
+            .ascii-logo { display: none; } /* Hide logo on mobile */
+            .console-pre { flex-direction: column; text-align: center; }
+            .fetch-info { text-align: center; margin: 0 auto; }
             .project-panel { flex-direction: column; }
-            .panel-placeholder { border-right: none; border-bottom: 1px solid var(--grid); height: 150px; }
+            .panel-img { height: 200px; }
         }
     </style>
 </head>
@@ -217,7 +225,7 @@
     <nav>
         <button id="pencil-toggle" class="nav-btn" title="Toggle Sketch Mode"><i class="fa-solid fa-pencil"></i></button>
         <a href="mailto:sharmasaiswaroop3@gmail.com" class="nav-btn hire-me-btn">HIRE ME</a>
-        <a href="https://github.com/galaxy338/Portfolio1" target="_blank" class="nav-btn">/ PORTFOLIO1 /</a>
+        <a href="https://github.com/galaxy338/Portfolio1" target="_blank" class="nav-btn">/ SOURCE /</a>
     </nav>
 
     <section class="hero">
@@ -250,45 +258,54 @@ _)      \.___.,|     .'
 <span>OS</span>: Ubuntu 24.04 LTS x86_64<br>
 <span>Kernel</span>: 6.8.0-generic<br>
 <span>Shell</span>: bash 5.2.21<br>
-<span>Resolution</span>: 3840x2160<br>
 <span>Expertise</span>: Node.js, Python, AI<br>
 <span>Memory</span>: 64GiB / 128GiB<br>
 <span>Uptime</span>: 2025d 13h
 </div>
             </div>
         </div>
-        
-        <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;" data-aos="fade-up">
-            <a href="https://github.com/Galaxy338" class="nav-btn">GITHUB</a>
-            <a href="https://discord.com/users/iammilkywaygalaxy" class="nav-btn">DISCORD</a>
+    </section>
+
+    <section class="marquee-section">
+        <div class="marquee-track">
+            <i class="fa-brands fa-python"></i>
+            <i class="fa-brands fa-node-js"></i>
+            <i class="fa-brands fa-docker"></i>
+            <i class="fa-brands fa-linux"></i>
+            <i class="fa-brands fa-js"></i>
+            <i class="fa-solid fa-robot"></i>
+            <i class="fa-solid fa-server"></i>
+            <i class="fa-solid fa-terminal"></i>
+            <i class="fa-brands fa-python"></i>
+            <i class="fa-brands fa-node-js"></i>
+            <i class="fa-brands fa-docker"></i>
+            <i class="fa-brands fa-linux"></i>
+            <i class="fa-brands fa-js"></i>
+            <i class="fa-solid fa-robot"></i>
         </div>
     </section>
 
     <section class="projects">
-        <h2 style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">SELECTED WORKS</h2>
-
-        <a href="https://github.com/sharmastudios" class="project-panel">
-            <div class="panel-placeholder"><i class="fa-solid fa-code-merge"></i></div>
+        <a href="https://github.com/sharmastudios" class="project-panel" data-aos="fade-right">
+            <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')"></div>
             <div class="panel-content">
-                <span class="tag">01 // ORGANISATION</span>
                 <h3>Sharma Studios</h3>
-                <p>High-performance backend engineering and cloud infrastructure orchestration for global scaling.</p>
+                <p>Infrastructure and backend orchestration. Focused on high-performance compute nodes.</p>
             </div>
         </a>
 
-        <a href="https://github.com/SharmaStudios/multi-egg" class="project-panel">
-            <div class="panel-placeholder"><i class="fa-solid fa-egg"></i></div>
+        <a href="https://github.com/SharmaStudios/multi-egg" class="project-panel" data-aos="fade-left">
             <div class="panel-content">
-                <span class="tag">02 // OPEN-SOURCE</span>
                 <h3>Multi-Egg System</h3>
-                <p>Advanced Pterodactyl orchestration tools for simplified deployment of complex node environments.</p>
+                <p>Advanced Pterodactyl automation tools for high-scale environments.</p>
             </div>
+            <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1605745341112-85968b193ef5?q=80&w=2071&auto=format&fit=crop')"></div>
         </a>
     </section>
 
     <footer>
-        <div style="font-family: 'JetBrains Mono'; margin-bottom: 10px;">galaxy338.is-a.dev</div>
-        <div>Made with passion © 2025</div>
+        <div style="font-family: 'JetBrains Mono'; margin-bottom: 10px; color: var(--accent);">galaxy338.is-a.dev</div>
+        <div style="opacity: 0.5; font-size: 0.8rem;">Made by Galaxy © 2025</div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -297,8 +314,7 @@ _)      \.___.,|     .'
         const pencilBtn = document.getElementById('pencil-toggle');
         pencilBtn.addEventListener('click', () => {
             document.body.classList.toggle('pencil-mode');
-            pencilBtn.classList.toggle('hire-me-btn');
         });
     </script>
 </body>
-</html
+</html>
