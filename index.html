@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#c19a6b">
     <meta property="og:image" content="https://pterodactyl-website.pages.dev/gallery/logo-icon.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;500&family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;500&family=Architects+Daughter&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -18,7 +18,6 @@
         :root {
             --bg: #1a1412;
             --accent: #c19a6b; 
-            --espresso: #3e2723; 
             --text: #f5f5f5;
             --muted: #57534e;
             --grid: rgba(193, 154, 107, 0.04);
@@ -27,37 +26,40 @@
             --offline: #f87171;
             --btn-bg: rgba(26, 20, 18, 0.9);
             --btn-text: var(--accent);
-            --border-style: 1px solid var(--accent);
+            --border: 1px solid var(--accent);
+            --sketch-radius: 0px;
         }
 
-        /* --- MANGA MODE OVERRIDES --- */
-        body.manga-mode {
-            --bg: #ffffff;
-            --accent: #000000;
-            --text: #000000;
-            --muted: #111;
+        /* --- PENCIL MODE OVERRIDES --- */
+        body.pencil-mode {
+            --bg: #f4f1ea; /* Paper Color */
+            --accent: #2d2d2d; /* Graphite Color */
+            --text: #333333;
+            --muted: #777;
             --console-bg: #fff;
-            --grid: radial-gradient(#000 1.5px, transparent 0);
-            --btn-bg: #000000; /* Darker buttons in manga mode */
+            --grid: repeating-linear-gradient(transparent, transparent 24px, #e5e5e5 25px); /* Lined Paper */
+            --btn-bg: #2d2d2d; 
             --btn-text: #ffffff;
-            --border-style: 4px solid #000;
-            font-family: 'Bangers', cursive;
-            background-size: 25px 25px;
+            --border: 2px solid #2d2d2d;
+            --sketch-radius: 255px 15px 225px 15px/15px 225px 15px 255px; /* Irregular hand-drawn look */
+            font-family: 'Architects Daughter', cursive;
         }
 
-        body.manga-mode h1 {
+        body.pencil-mode h1 {
             background: none !important;
-            -webkit-text-fill-color: #000 !important;
-            text-shadow: 4px 4px 0px #fff, 8px 8px 0px #000;
+            -webkit-text-fill-color: #2d2d2d !important;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            letter-spacing: 0px;
         }
 
-        body.manga-mode .project-panel, body.manga-mode .console, body.manga-mode .server-card {
-            border: var(--border-style) !important;
-            box-shadow: 10px 10px 0px #000;
+        body.pencil-mode .project-panel, body.pencil-mode .console, body.pencil-mode .server-card {
+            border: var(--border) !important;
+            border-radius: var(--sketch-radius) !important;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
             background: #fff !important;
         }
 
-        body.manga-mode .panel-img { filter: grayscale(1) contrast(200%) brightness(0.8); }
+        body.pencil-mode .panel-img { filter: grayscale(1) contrast(1.2) opacity(0.8); }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
@@ -68,13 +70,13 @@
             overflow-x: hidden;
             background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
             background-size: 50px 50px;
-            transition: 0.3s;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
         /* --- Navbar --- */
         nav { display: flex; justify-content: flex-end; padding: 30px 5%; position: fixed; width: 100%; z-index: 100; gap: 15px; }
-        .nav-btn { cursor: pointer; color: var(--btn-text); text-decoration: none; font-family: 'JetBrains Mono'; font-size: 0.75rem; padding: 10px 20px; border: var(--border-style); letter-spacing: 2px; transition: 0.3s; background: var(--btn-bg); backdrop-filter: blur(5px); display: flex; align-items: center; gap: 8px; font-weight: bold; }
-        .nav-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+        .nav-btn { cursor: pointer; color: var(--btn-text); text-decoration: none; font-family: 'JetBrains Mono'; font-size: 0.75rem; padding: 10px 20px; border: var(--border); letter-spacing: 2px; transition: 0.3s; background: var(--btn-bg); backdrop-filter: blur(5px); display: flex; align-items: center; gap: 8px; font-weight: bold; }
+        .nav-btn:hover { background: var(--accent); color: #fff; transform: rotate(-1deg) scale(1.05); }
 
         /* --- Hero --- */
         .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 20px 60px; }
@@ -96,14 +98,19 @@
 
         /* --- Console --- */
         .console { width: 95%; max-width: 850px; background: var(--console-bg); border: 1px solid var(--muted); border-radius: 4px; font-family: 'JetBrains Mono', monospace; padding: 30px; text-align: left; backdrop-filter: blur(10px); margin-bottom: 60px; border-left: 6px solid var(--accent); }
-        .console-pre { color: var(--accent); font-size: 0.8rem; line-height: 1.2; display: flex; gap: 40px; flex-wrap: wrap; }
+        .console-pre { color: var(--accent); font-size: 0.8rem; line-height: 1.4; display: flex; gap: 40px; flex-wrap: wrap; }
         .fetch-info { color: var(--text); }
         .fetch-info span { color: var(--accent); font-weight: bold; }
 
         /* --- Network --- */
         .network-section { padding: 100px 5%; text-align: center; }
         .server-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 50px; }
-        .server-card { background: rgba(255,255,255,0.02); border: 1px solid var(--grid); padding: 25px; text-align: left; transition: 0.3s; }
+        .server-card { background: rgba(255,255,255,0.02); border: 1px solid var(--grid); padding: 25px; text-align: left; transition: 0.3s; border-left: 4px solid var(--muted); }
+        .status-indicator { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; font-family: 'JetBrains Mono'; text-transform: uppercase; margin-bottom: 10px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot.online { background: var(--online); box-shadow: 0 0 10px var(--online); animation: pulse 2s infinite; }
+        .dot.offline { background: var(--offline); }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
         /* --- Projects --- */
         .projects { padding: 120px 5%; }
@@ -113,9 +120,9 @@
         .panel-content { flex: 1; padding: 50px; }
         .panel-content h3 { font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; }
 
-        /* --- Hire Me Section --- */
-        .hire-section { padding: 80px 5%; text-align: center; background: rgba(0,0,0,0.2); }
-        .hire-title { font-size: 2rem; margin-bottom: 30px; letter-spacing: 2px; }
+        /* --- Hire Me --- */
+        .hire-section { padding: 100px 5%; text-align: center; background: rgba(0,0,0,0.1); border-top: 1px solid var(--grid); }
+        .hire-title { font-size: clamp(1.5rem, 5vw, 2.5rem); margin-bottom: 35px; }
 
         footer { padding: 60px 5%; text-align: center; border-top: 1px solid var(--grid); opacity: 0.6; }
 
@@ -125,7 +132,7 @@
 <body id="body-main">
 
     <nav>
-        <div class="nav-btn" onclick="toggleMangaMode()">
+        <div class="nav-btn" onclick="togglePencilMode()">
             <i class="fa-solid fa-pencil"></i>
         </div>
         <a href="https://github.com/galaxy338/Portfolio" target="_blank" class="nav-btn" id="source-btn">
@@ -160,15 +167,20 @@ _)      \.___.,|     .'
                 <div class="fetch-info">
                     <span>sai@swaroop</span>:~$ neofetch<br>
                     --------------------------<br>
+                    <span>OS</span>: Linux x86_64<br>
                     <span>NAME</span>: Sai Swaroop Sharma<br>
                     <span>UPTIME</span>: 2025 Days of Code<br>
-                    <span>STACK</span>: Node.js, Python, Docker, AI<br>
+                    <span>SHELL</span>: zsh / node.js<br>
+                    <span>INSTA</span>: @sharmasharamkar<br>
+                    <span>STATUS</span>: Sketching the Backend<br>
+                    <span>STACK</span>: Python, Node.js, Docker, AI<br>
                 </div>
             </div>
         </div>
 
         <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
             <a href="https://github.com/Galaxy338" class="nav-btn">GITHUB</a>
+            <a href="https://instagram.com/sharmasharamkar" class="nav-btn" target="_blank">INSTAGRAM</a>
             <a href="https://discord.com/users/iammilkywaygalaxy" class="nav-btn">DISCORD</a>
         </div>
     </section>
@@ -176,27 +188,39 @@ _)      \.___.,|     .'
     <section class="network-section">
         <h2 class="hero-subtitle">Network Infrastructure</h2>
         <div class="server-grid">
-            <div class="server-card"><h4>India, Chennai</h4><p style="color:var(--muted)">in.plexanodes.net</p></div>
-            <div class="server-card"><h4>Singapore</h4><p style="color:var(--muted)">173.234.15.228</p></div>
-            <div class="server-card"><h4>India, Mumbai</h4><p style="color:var(--muted)">in.leoxstudios.com</p></div>
+            <div class="server-card">
+                <div class="status-indicator"><div class="dot offline"></div> Offline</div>
+                <h4>India, Chennai</h4>
+                <p style="color:var(--muted)">in.plexanodes.net</p>
+            </div>
+            <div class="server-card">
+                <div class="status-indicator"><div class="dot online"></div> Online</div>
+                <h4>Singapore</h4>
+                <p style="color:var(--muted)">173.234.15.228</p>
+            </div>
+            <div class="server-card">
+                <div class="status-indicator"><div class="dot online"></div> Online</div>
+                <h4>India, Mumbai</h4>
+                <p style="color:var(--muted)">in.leoxstudios.com</p>
+            </div>
         </div>
     </section>
 
     <section class="projects">
-        <h2 class="hero-subtitle" style="text-align:center; margin-bottom:60px;">Selected Works</h2>
+        <h2 class="hero-subtitle" style="text-align:center; margin-bottom:60px;">My Projects</h2>
         
         <a href="https://github.com/sharmastudios" class="project-panel">
             <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800')"></div>
             <div class="panel-content">
                 <h3>Sharma Studios</h3>
-                <p>High-performance software and scalable infrastructure solutions.</p>
+                <p>High-performance software and scalable infrastructure solutions designed for modern developers.</p>
             </div>
         </a>
 
         <a href="https://github.com/SharmaStudios/multi-egg" class="project-panel">
             <div class="panel-content">
                 <h3>Afernact Multi-Egg</h3>
-                <p>Open-source Pterodactyl egg configurations for multi-node deployments.</p>
+                <p>Advanced open-source Pterodactyl egg configurations optimized for multi-node deployments.</p>
             </div>
             <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1605745341112-85968b193ef5?auto=format&fit=crop&w=800')"></div>
         </a>
@@ -204,7 +228,7 @@ _)      \.___.,|     .'
 
     <section class="hire-section">
         <h2 class="hire-title">Wanna work with me?</h2>
-        <a href="mailto:contact@galaxy338.is-a.dev" class="nav-btn" style="margin: 0 auto; width: fit-content; background:var(--accent); color:#000;">HIRE ME</a>
+        <a href="mailto:contact@galaxy338.is-a.dev" class="nav-btn" style="margin: 0 auto; width: fit-content; background:var(--accent); color:var(--bg); padding: 15px 40px; font-size: 1.1rem;">HIRE ME</a>
     </section>
 
     <footer>
@@ -215,12 +239,12 @@ _)      \.___.,|     .'
     <script>
         AOS.init({ duration: 1000, once: true });
 
-        function toggleMangaMode() {
+        function togglePencilMode() {
             const body = document.getElementById('body-main');
             const sourceBtn = document.getElementById('source-btn');
-            body.classList.toggle('manga-mode');
+            body.classList.toggle('pencil-mode');
 
-            if (body.classList.contains('manga-mode')) {
+            if (body.classList.contains('pencil-mode')) {
                 sourceBtn.href = 'portfolio1';
             } else {
                 sourceBtn.href = 'https://github.com/galaxy338/Portfolio';
